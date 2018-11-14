@@ -1,0 +1,355 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import pandas as pd"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# 1. And that's how they become the Brady Bunch"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 39,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>age</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>count</th>\n",
+       "      <td>7.000000</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>mean</th>\n",
+       "      <td>9.857143</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>std</th>\n",
+       "      <td>2.734262</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>min</th>\n",
+       "      <td>6.000000</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>25%</th>\n",
+       "      <td>8.000000</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>50%</th>\n",
+       "      <td>10.000000</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>75%</th>\n",
+       "      <td>11.500000</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>max</th>\n",
+       "      <td>14.000000</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "             age\n",
+       "count   7.000000\n",
+       "mean    9.857143\n",
+       "std     2.734262\n",
+       "min     6.000000\n",
+       "25%     8.000000\n",
+       "50%    10.000000\n",
+       "75%    11.500000\n",
+       "max    14.000000"
+      ]
+     },
+     "execution_count": 39,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "kids = { \n",
+    "    'Greg': 14,\n",
+    "    'Marcia': 12,\n",
+    "    'Peter': 11,\n",
+    "    'Jan': 10,\n",
+    "    'Bobby': 8,\n",
+    "    'Cousin Oliver': 8,\n",
+    "    'Cindy': 6,\n",
+    "}\n",
+    "kids_df = pd.DataFrame.from_dict(kids, orient='index', columns=['age'])\n",
+    "kids_df.describe()\n",
+    "# kids_df.hist()\n",
+    "\n",
+    "# mean = sum(kids)/len(kids) = ~9.86\n",
+    "# median = 10\n",
+    "# mode = 8\n",
+    "\n",
+    "# variance = kids.sum((val - mean)^2) / (len(kids) - 1) = 7.476\n",
+    "# standard deviation = sqrt(variance?) = 2.734262\n",
+    "# standard error = std dev / len(kids)^2 = 5.58 / & ^ 0.5 = ~1.033\n",
+    "# ... from pandas = kids_df.sem(ddof=1) ==  1.033454\n",
+    "\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# 2.\n",
+    "__Mean for the central tendency__ since the data best clusters around 9.8.\n",
+    "\n",
+    "__Standard deviance for variance__ just becuase that's the descriptor I see most commonly used and understood, and it accuratley gives a sense *of the spread* of data: the vast majority of ages fall within 2 yaers of the mean."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# 3. Happy birthday Cindy"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Everything will change except:\n",
+    "- median\n",
+    "- mode\n",
+    "\n",
+    "Why? The mean increases to 10, and all measures of variance depend on the mean. Intuitively, there is also *a smaller spread* of values since 7 is closer to the mean than 6 was -- even to the new higher mean. This mean the `std` decreases from 2.73 to 2.51."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# 4. Bye, Cousin Oliver\n",
+    "This data isn't even vaguely normally distributed now, and too small to really asses well. (Though, I get that it's an exersise meant to be worked through by hand).\n",
+    "\n",
+    "It might be clearest to say, *Excluding an outlier of age 1, [describe]...* and use mean and standard deviation, as before."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 40,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>age</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>count</th>\n",
+       "      <td>6.000000</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>mean</th>\n",
+       "      <td>10.166667</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>std</th>\n",
+       "      <td>2.857738</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>min</th>\n",
+       "      <td>6.000000</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>25%</th>\n",
+       "      <td>8.500000</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>50%</th>\n",
+       "      <td>10.500000</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>75%</th>\n",
+       "      <td>11.750000</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>max</th>\n",
+       "      <td>14.000000</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "             age\n",
+       "count   6.000000\n",
+       "mean   10.166667\n",
+       "std     2.857738\n",
+       "min     6.000000\n",
+       "25%     8.500000\n",
+       "50%    10.500000\n",
+       "75%    11.750000\n",
+       "max    14.000000"
+      ]
+     },
+     "execution_count": 40,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "kids = { \n",
+    "    'Greg': 14,\n",
+    "    'Marcia': 12,\n",
+    "    'Peter': 11,\n",
+    "    'Jan': 10,\n",
+    "    'Bobby': 8,\n",
+    "#     'Cousin Oliver': 1,\n",
+    "    'Cindy': 6,\n",
+    "}\n",
+    "kids_df = pd.DataFrame.from_dict(kids, orient='index', columns=['age'])\n",
+    "kids_df.describe()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 42,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([[<matplotlib.axes._subplots.AxesSubplot object at 0x1180504a8>]],\n",
+       "      dtype=object)"
+      ]
+     },
+     "execution_count": 42,
+     "metadata": {},
+     "output_type": "execute_result"
+    },
+    {
+     "data": {
+      "image/png": "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\n",
+      "text/plain": [
+       "<Figure size 432x288 with 1 Axes>"
+      ]
+     },
+     "metadata": {
+      "needs_background": "light"
+     },
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "kids_df.hist()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# 5. Guess the Fans\n",
+    "I'd take a weighted average based on how popular each magezine was:\n",
+    "- weighted by their (made up) popularity\n",
+    "- *assumes no overlap between magezine subscribers* which is a fairly naive approach\n",
+    "- and assuming the magezine subscribers are a representative sample of the American population\n",
+    "This estimates (for our made-up numbers): __~22% of Americans are fans of the show__"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 45,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "22.299999999999997"
+      ]
+     },
+     "execution_count": 45,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "ew = 0.7\n",
+    "tg = 0.2\n",
+    "pct = 0.1\n",
+    "spp = 0.1\n",
+    "american_popularity_est = 20 * tg + 23 * ew + 17 * pct + 5 * spp\n",
+    "american_popularity_est"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.7.0"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}
